@@ -5,6 +5,7 @@ using System.Net;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using AwkwardPresentation.Business.Services;
 using AwkwardPresentation.Models.Pages;
 using EPiServer;
 using EPiServer.Core;
@@ -70,7 +71,7 @@ namespace AwkwardPresentation.Controllers
 
 
         [System.Web.Http.HttpPost]
-        public void UploadSlideData([FromBody] SimpleImageModel model)
+        public async void UploadSlideData([FromBody] SimpleImageModel model)
         {
             if (model == null || model.Id == 0)
             {
@@ -86,6 +87,7 @@ namespace AwkwardPresentation.Controllers
                 var imageModel = contentRepository.GetDefault<ImageModel>(presentation.ContentLink);
                 imageModel.PageName = "New imagemodel number" + new Random().Next();
                 imageModel.Text = model.Text;
+                imageModel.Url = await ImageProvider.RunAsync(model.Text) as string;
 
                 // Need AccessLevel.NoAccess to get permission to create and save this new page.
                 contentRepository.Save(imageModel, SaveAction.Publish, AccessLevel.NoAccess);
