@@ -1,4 +1,9 @@
-﻿using AwkwardPresentation.Models.Properties;
+﻿using AwkwardPresentation.Models.Pages;
+using AwkwardPresentation.Models.Properties;
+using EPiServer;
+using EPiServer.Core;
+using EPiServer.ServiceLocation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,26 +15,37 @@ namespace AwkwardPresentation.Controllers
 {
     public class ClickerController : ApiController
     {
+        static IContentRepository contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
+
         [System.Web.Http.HttpPost]
         public bool InputData([FromBody]ClickerModel model)
         {
-            //if (model != null && model is ClickerModel)
-            //{
-            //    using (var db = new DatabaseContext())
-            //    {
-            //        db.ClickerData.Add(model);
-            //        try
-            //        {
-            //            db.SaveChanges();
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            return false;
-            //        }
-            //        return true;
-            //    }
-            //}
+            if (model != null && model is ClickerModel)
+            {
+                var clickerPage = contentRepository.GetChildren<ClickerPage>(ContentReference.StartPage).FirstOrDefault();
+                if (clickerPage == null)
+                {
+                    clickerPage = contentRepository.GetDefault<ClickerPage>(ContentReference.StartPage);
+                }
+                clickerPage.DataSet.Add(model);
+                return true;
+            }
             return false;
+        }
+
+        public ActionResult GetAllData()
+        {
+            var clickerPage = contentRepository.GetChildren<ClickerPage>(ContentReference.StartPage).FirstOrDefault();
+            if (clickerPage == null)
+            {
+                return null;
+            }
+            var data = clickerPage.DataSet;
+            return new JsonResult()
+            {
+                Data = data,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
     }
 }

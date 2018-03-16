@@ -1,4 +1,5 @@
 ﻿using AwkwardPresentation.Business.Services;
+using AwkwardPresentation.Models.Properties;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -51,27 +52,31 @@ namespace AwkwardPresentation.Controllers
         }
 
 
-        //public async Task<ActionResult> ClickerTest()
-        //{
-        //    var dummy = new ClickerModel();
-        //    dummy.Name = "test";
-        //    dummy.Data = "DummyData" + new Random(10);
-        //    dummy.Published_at = DateTime.Now;
+        public async Task<ActionResult> ClickerTest()
+        {
+            var dummy = new ClickerModel
+            {
+                Name = "test",
+                Data = "DummyData" + new Random(10),
+                Published_at = DateTime.Now
+            };
 
-        //    var result = await ImageProvider.RunAsync(dummy, "http://placeholder.no/api/clicker/inputdata");
+            var payload = JsonConvert.SerializeObject(dummy);
 
-        //    if (result != null && result is bool && (bool)result)
-        //        return new JsonResult()
-        //        {
-        //            Data = new { Result = "Success" },
-        //            JsonRequestBehavior = JsonRequestBehavior.AllowGet
-        //        };
-        //    else
-        //        return new JsonResult()
-        //        {
-        //            Data = new { Result = "Failure" },
-        //            JsonRequestBehavior = JsonRequestBehavior.AllowGet
-        //        };
-        //}
+            var result = await ImageProvider.RunAsync(payload, "http://placeholder.no/api/clicker/inputdata");
+
+            if (result != null && result is bool && (bool)result)
+                return new JsonResult()
+                {
+                    Data = new { Result = "Success" },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            else
+                return new JsonResult()
+                {
+                    Data = new { Result = "Failure" },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+        }
     }
 }
