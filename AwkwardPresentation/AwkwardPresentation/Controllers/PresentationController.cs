@@ -87,7 +87,7 @@ namespace AwkwardPresentation.Controllers
                 var imageModel = contentRepository.GetDefault<ImageModel>(presentation.ContentLink);
                 imageModel.PageName = "New imagemodel number" + new Random().Next();
                 imageModel.Text = model.Text;
-                imageModel.Url = await ImageProvider.RunAsync(model.Text) as string;
+                imageModel.Url = await ImageProvider.GetImage(model.Text) as string;
 
                 // Need AccessLevel.NoAccess to get permission to create and save this new page.
                 contentRepository.Save(imageModel, SaveAction.Publish, AccessLevel.NoAccess);

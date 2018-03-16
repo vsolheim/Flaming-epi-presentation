@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,33 +14,54 @@ namespace AwkwardPresentation.Business.Services
     {
         static HttpClient client = new HttpClient();
 
-        public static async Task<object> RunAsync(string payload = null, string url = "http://text2slides.westeurope.cloudapp.azure.com/text2slides")
+        public static async Task<object> GetImage(string searchText, string staticText = "", string prevImageText = "", string url = "http://text2slides.westeurope.cloudapp.azure.com/text2slides")
         {
-            if (payload == null)
-                payload = "Yay!";
 
+            var textObject = JsonConvert.SerializeObject(new
+            {
+                text = "Test of concept with a few words",
+                excludedText = prevImageText,
+                staticText = staticText
+            });
+
+            var returnObject = await SendJsonRequest(textObject, url);
+
+            dynamic jsonObj = JsonConvert.DeserializeObject(returnObject.ToString());
+
+            return returnObject;
+        }
+
+        public static async Task<Object> SendJsonRequest(object requestObject, string url)
+        {
             var request = new HttpRequestMessage(HttpMethod.Post, url);
 
-            using (var content = new StringContent(payload, Encoding.UTF8, "application/json"))
+            using (var content = new StringContent((string)requestObject, Encoding.UTF8, "application/json"))
             {
                 request.Content = content;
                 var response = await client.SendAsync(request).ConfigureAwait(false);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                if (!response.IsSuccessStatusCode)
+                    return null;
+                var returnObject = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                return returnObject;
             }
 
-            //var response = await client.PostAsJsonAsync(url, payload);
-            //string result = "";
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    var a = await response.Content.ReadAsStringAsync();
-            //    dynamic b = JsonConvert.DeserializeObject(a);
-            //    if (b is bool)
-            //        return b;
-            //    if (b != null && b.Result != null)
-            //        result = b.Result;
-            //}
-            //return result;
+        }
+
+        public static async Task<Object> SendFormRequest(object requestObject, string url)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, url);
+
+            using (var content = (FormUrlEncodedContent)requestObject)
+            {
+                request.Content = content;
+                var response = await client.SendAsync(request).ConfigureAwait(false);
+                if (!response.IsSuccessStatusCode)
+                    return null;
+                var returnObject = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                return returnObject;
+            }
         }
     }
 }

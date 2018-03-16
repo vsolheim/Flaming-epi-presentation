@@ -7,18 +7,18 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace AwkwardPresentation.Controllers
 {
-    public class TestController : Controller
+    public class TestController : ApiController
     {
-        [HttpPost]
+        [System.Web.Http.HttpPost]
         public async Task<ActionResult> Test()
         {
-            string a = "";
-            using (var reader = new StreamReader(Request.InputStream))
-                a = reader.ReadToEnd();
+            string a = null;
+
             if (a != null)
                 return new JsonResult()
                 {
@@ -43,7 +43,7 @@ namespace AwkwardPresentation.Controllers
                     text = "Test of concept with a few words"
                 }
             );
-            var data = await ImageProvider.RunAsync(b, a);
+            var data = await ImageProvider.GetImage(b, a);
             return new JsonResult()
             {
                 Data = new { Result = data },
@@ -63,7 +63,7 @@ namespace AwkwardPresentation.Controllers
 
             var payload = JsonConvert.SerializeObject(dummy);
 
-            var result = await ImageProvider.RunAsync(payload, "http://placeholder.no/api/clicker/inputdata");
+            var result = await ImageProvider.GetImage(payload, "http://placeholder.no/api/clicker/inputdata");
 
             if (result != null && result is bool && (bool)result)
                 return new JsonResult()

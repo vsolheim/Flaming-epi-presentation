@@ -239,6 +239,7 @@
     <Compile Include="Models\Pages\ImageModel.cs" />
     <Compile Include="Models\Pages\PresentationModel.cs" />
     <Compile Include="Models\Properties\ClickerModel.cs" />
+    <Compile Include="Models\Properties\ImageList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

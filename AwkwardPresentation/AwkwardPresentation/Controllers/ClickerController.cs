@@ -1,4 +1,5 @@
-﻿using AwkwardPresentation.Models.Pages;
+﻿using AwkwardPresentation.Business.Services;
+using AwkwardPresentation.Models.Pages;
 using AwkwardPresentation.Models.Properties;
 using EPiServer;
 using EPiServer.Core;
@@ -7,6 +8,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -36,6 +39,23 @@ namespace AwkwardPresentation.Controllers
             }
             return false;
         }
+
+        [System.Web.Http.HttpGet]
+        public async Task<string> MakeBeep()
+        {
+            var url = "https://api.particle.io/v1/devices/29003b000f47353136383631/biip?access_token=a75169066cfd3b1cb880840469f4474fbbb923dc";
+
+            var list = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("duration", "1000")
+            };
+            var formInput = new FormUrlEncodedContent(list);
+
+            await ImageProvider.SendFormRequest(formInput, url);
+
+            return "done";
+        }
+
 
         public ActionResult GetAllData()
         {
