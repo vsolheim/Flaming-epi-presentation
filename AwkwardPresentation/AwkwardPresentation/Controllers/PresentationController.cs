@@ -53,7 +53,7 @@ namespace AwkwardPresentation.Controllers
                     ContentType = "application/json",
                     Data = new SimpleImageModel()
                     {
-                        Url = "https://cdn.fstoppers.com/styles/large-16-9/s3/wp-content/uploads/2013/02/Fstoppers-Awkward-Valentines-2.jpg",
+                        Url = "https://assets3.thrillist.com/v1/image/2546883/size/tmg-article_tall.jpg",
                         Text = "Some text that caused this image"
                     },
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet
