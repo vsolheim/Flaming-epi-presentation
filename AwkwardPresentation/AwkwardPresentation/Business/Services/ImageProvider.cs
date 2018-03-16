@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AwkwardPresentation.Models.Properties;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,9 @@ namespace AwkwardPresentation.Business.Services
 
             var returnObject = await SendJsonRequest(textObject, url);
 
-            dynamic jsonObj = JsonConvert.DeserializeObject(returnObject.ToString());
+            var jsonObj = JsonConvert.DeserializeObject<ImageList>(returnObject.ToString());
 
-            return returnObject;
+            return jsonObj;
         }
 
         public static async Task<Object> SendJsonRequest(object requestObject, string url)

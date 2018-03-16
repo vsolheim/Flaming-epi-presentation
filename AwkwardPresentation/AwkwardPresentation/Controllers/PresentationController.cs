@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using AwkwardPresentation.Business.Services;
 using AwkwardPresentation.Models.Pages;
+using AwkwardPresentation.Models.Properties;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Core.Internal;
@@ -84,14 +86,32 @@ namespace AwkwardPresentation.Controllers
 
             if (presentation != null)
             {
+                var iamgeList = await ImageProvider.GetImage(model.Text) as ImageList;
                 var imageModel = contentRepository.GetDefault<ImageModel>(presentation.ContentLink);
                 imageModel.PageName = "New imagemodel number" + new Random().Next();
                 imageModel.Text = model.Text;
-                imageModel.Url = await ImageProvider.GetImage(model.Text) as string;
+                imageModel.Url = iamgeList?.Slides?.FirstOrDefault().Url;
 
                 // Need AccessLevel.NoAccess to get permission to create and save this new page.
                 contentRepository.Save(imageModel, SaveAction.Publish, AccessLevel.NoAccess);
             }
         }
+
+        public async Task<ActionResult> SummaryPage(int id)
+        {
+            var contentReference = new ContentReference(id);
+            if (contentReference == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            var contentLoader = ServiceLocator.Current.GetInstance<ContentLoader>();
+            var presentation = contentLoader.Get<PresentationModel>(contentReference);
+
+            var data = DataSummerizer.GetSummary(presentation.Created);
+
+            return null;
+        }
+
     }
 }

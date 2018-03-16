@@ -225,6 +225,7 @@
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ItemGroup>
+    <Compile Include="Business\Services\DataSummerizer.cs" />
     <Compile Include="Business\Services\ImageProvider.cs" />
     <Compile Include="Controllers\ClickerController.cs" />
     <Compile Include="Controllers\PresentationController.cs" />

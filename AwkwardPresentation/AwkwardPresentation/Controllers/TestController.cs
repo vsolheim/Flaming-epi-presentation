@@ -33,17 +33,13 @@ namespace AwkwardPresentation.Controllers
                 };
         }
 
+        [System.Web.Http.HttpGet]
         public async Task<ActionResult> RunTest()
         {
 
             var a = "http://text2slides.westeurope.cloudapp.azure.com/text2slides";
-            var b = JsonConvert.SerializeObject(
-                new
-                {
-                    text = "Test of concept with a few words"
-                }
-            );
-            var data = await ImageProvider.GetImage(b, a);
+            var b = "Test of concept with a few words";
+            var data = await ImageProvider.GetImage(b, "", "", a) as ImageList;
             return new JsonResult()
             {
                 Data = new { Result = data },
