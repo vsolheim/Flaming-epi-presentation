@@ -225,7 +225,10 @@
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ItemGroup>
+    <Compile Include="Business\Services\ImageProvider.cs" />
+    <Compile Include="Controllers\ClickerController.cs" />
     <Compile Include="Controllers\PresentationController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -234,15 +237,16 @@
     <Compile Include="Infrastructure\WebApiConfig.cs" />
     <Compile Include="Models\Pages\ImageModel.cs" />
     <Compile Include="Models\Pages\PresentationModel.cs" />
+    <Compile Include="Models\Properties\ClickerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Business\" />
     <Folder Include="Models\Blocks\" />
     <Folder Include="Models\Media\" />
-    <Folder Include="Models\Properties\" />
     <Folder Include="Static\" />
+    <Folder Include="Views\Clicker\" />
     <Folder Include="Views\Shared\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />
