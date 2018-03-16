@@ -73,11 +73,11 @@ namespace AwkwardPresentation.Controllers
 
 
         [System.Web.Http.HttpPost]
-        public async void UploadSlideData([FromBody] SimpleImageModel model)
+        public async Task<ActionResult> UploadSlideData([FromBody] SimpleImageModel model)
         {
             if (model == null || model.Id == 0)
             {
-                return;
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
@@ -94,7 +94,11 @@ namespace AwkwardPresentation.Controllers
 
                 // Need AccessLevel.NoAccess to get permission to create and save this new page.
                 contentRepository.Save(imageModel, SaveAction.Publish, AccessLevel.NoAccess);
+
+                throw new HttpResponseException(HttpStatusCode.Accepted);
             }
+
+            throw new HttpResponseException(HttpStatusCode.BadRequest);
         }
 
         public async Task<ActionResult> SummaryPage(int id)
