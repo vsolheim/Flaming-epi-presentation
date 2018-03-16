@@ -25,5 +25,15 @@ namespace AwkwardPresentation.Controllers
 
             return newPage.ContentLink.ID;
         }
+
+
+        [HttpPost]
+        public void UploadSlideData([FromBody] SimpleImageModel model)
+        {
+            var imageModel = new ImageModel()
+            {
+                
+            };
+        }
     }
 }
