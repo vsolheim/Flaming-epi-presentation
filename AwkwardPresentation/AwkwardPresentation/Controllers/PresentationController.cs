@@ -108,7 +108,7 @@ namespace AwkwardPresentation.Controllers
             var contentLoader = ServiceLocator.Current.GetInstance<ContentLoader>();
             var presentation = contentLoader.Get<PresentationModel>(contentReference);
 
-            var data = DataSummerizer.GetSummary(presentation.Created);
+            var sensorData = DataSummerizer.SensorySummary(presentation.Created);
 
             return null;
         }

@@ -74,5 +74,16 @@ namespace AwkwardPresentation.Controllers
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet
                 };
         }
+
+        [System.Web.Http.HttpGet]
+        public async Task<ActionResult> summaryTest()
+        {
+            
+            return new JsonResult()
+            {
+                Data = new { Result = await DataSummerizer.TextSummary(null) },
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
     }
 }
