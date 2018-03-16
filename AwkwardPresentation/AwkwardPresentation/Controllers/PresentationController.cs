@@ -46,6 +46,20 @@ namespace AwkwardPresentation.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
+            if (id == 0)
+            {
+                return new JsonDataResult()
+                {
+                    ContentType = "application/json",
+                    Data = new SimpleImageModel()
+                    {
+                        Url = "https://assets3.thrillist.com/v1/image/2546883/size/tmg-article_tall.jpg",
+                        Text = "Some text that caused this image"
+                    },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+
             var contentLoader = ServiceLocator.Current.GetInstance<ContentLoader>();
             var images = contentLoader.GetChildren<ImageModel>(contentReference);
 
@@ -73,11 +87,11 @@ namespace AwkwardPresentation.Controllers
 
 
         [System.Web.Http.HttpPost]
-        public async void UploadSlideData([FromBody] SimpleImageModel model)
+        public async Task<ActionResult> UploadSlideData([FromBody] SimpleImageModel model)
         {
             if (model == null || model.Id == 0)
             {
-                return;
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
@@ -94,7 +108,11 @@ namespace AwkwardPresentation.Controllers
 
                 // Need AccessLevel.NoAccess to get permission to create and save this new page.
                 contentRepository.Save(imageModel, SaveAction.Publish, AccessLevel.NoAccess);
+
+                throw new HttpResponseException(HttpStatusCode.Accepted);
             }
+
+            throw new HttpResponseException(HttpStatusCode.BadRequest);
         }
 
         public async Task<ActionResult> SummaryPage(int id)
