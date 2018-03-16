@@ -46,6 +46,20 @@ namespace AwkwardPresentation.Controllers
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
+            if (id == 0)
+            {
+                return new JsonDataResult()
+                {
+                    ContentType = "application/json",
+                    Data = new SimpleImageModel()
+                    {
+                        Url = "https://cdn.fstoppers.com/styles/large-16-9/s3/wp-content/uploads/2013/02/Fstoppers-Awkward-Valentines-2.jpg",
+                        Text = "Some text that caused this image"
+                    },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+
             var contentLoader = ServiceLocator.Current.GetInstance<ContentLoader>();
             var images = contentLoader.GetChildren<ImageModel>(contentReference);
 
