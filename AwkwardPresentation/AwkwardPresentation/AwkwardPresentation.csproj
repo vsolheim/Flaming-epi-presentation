@@ -235,6 +235,7 @@
     <Compile Include="Helpers\ContentLoaderWrapper.cs" />
     <Compile Include="Infrastructure\InitializationModule.cs" />
     <Compile Include="Infrastructure\WebApiConfig.cs" />
+    <Compile Include="Models\Pages\ClickerPage.cs" />
     <Compile Include="Models\Pages\ImageModel.cs" />
     <Compile Include="Models\Pages\PresentationModel.cs" />
     <Compile Include="Models\Properties\ClickerModel.cs" />
