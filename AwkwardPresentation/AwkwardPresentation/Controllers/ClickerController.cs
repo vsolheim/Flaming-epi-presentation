@@ -27,7 +27,11 @@ namespace AwkwardPresentation.Controllers
                 {
                     clickerPage = contentRepository.GetDefault<ClickerPage>(ContentReference.StartPage);
                 }
-                clickerPage.DataSet.Add(model);
+
+                var modelPage = contentRepository.GetDefault<StupidClickerModel>(ContentReference.StartPage);
+                modelPage.UpdateStupid(model);
+
+                clickerPage.DataSet.Add(modelPage.ContentLink);
                 return true;
             }
             return false;

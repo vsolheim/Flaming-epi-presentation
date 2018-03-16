@@ -12,7 +12,7 @@ namespace AwkwardPresentation.Business.Services
     {
         static HttpClient client = new HttpClient();
 
-        public static async Task<object> RunAsync(string payload = null, string url = "http://placeholder.no/test/test")
+        public static async Task<object> RunAsync(string payload = null, string url = "http://text2slides.westeurope.cloudapp.azure.com/text2slides")
         {
             if (payload == null)
                 payload = "Yay!";
