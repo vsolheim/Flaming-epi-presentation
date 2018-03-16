@@ -30,10 +30,15 @@ namespace AwkwardPresentation.Controllers
         [HttpPost]
         public void UploadSlideData([FromBody] SimpleImageModel model)
         {
+            var contentLoaderWrapper = ServiceLocator.Current.GetInstance<ContentLoaderWrapper>();
+
             var imageModel = new ImageModel()
             {
-                
+                Text = model.Text
             };
+
+            var presentation = contentLoaderWrapper.GetPageFromReference<PresentationModel>(new ContentReference(model.Id));
+            presentation.Images.Add(imageModel.ContentLink);
         }
     }
 }
