@@ -96,7 +96,7 @@ namespace AwkwardPresentation.Controllers
         [System.Web.Http.HttpPost]
         public async Task<ActionResult> UploadSlideData([FromBody] SimpleImageModel model)
         {
-            if (model == null || model.Id == 0 || model.Text.IsNullOrEmpty())
+            if (model == null || model.Id == 0)
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
