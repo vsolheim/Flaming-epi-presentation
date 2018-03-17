@@ -103,11 +103,18 @@ namespace AwkwardPresentation.Controllers
 
             var contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
             var contentLoaderWrapper = ServiceLocator.Current.GetInstance<ContentLoaderWrapper>();
-            var presentation = contentLoaderWrapper.GetPageFromReference<PresentationModel>(new ContentReference(model.Id));
+
+            var reference = new ContentReference(model.Id);
+            var presentation = contentLoaderWrapper.GetPageFromReference<PresentationModel>(reference);
+
+
+            var images = contentRepository.GetChildren<ImageModel>(reference);
+            var prevText = images.FirstOrDefault()?.Text;
+
 
             if (presentation != null)
             {
-                var imageList = await ImageProvider.GetImage(model.Text) as ImageList;
+                var imageList = await ImageProvider.GetImage(model.Text, "", prevText) as ImageList;
                 var imageModel = contentRepository.GetDefault<ImageModel>(presentation.ContentLink);
                 imageModel.PageName = "New imagemodel number" + new Random().Next();
                 imageModel.Text = model.Text;
