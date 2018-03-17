@@ -25,6 +25,51 @@ namespace AwkwardPresentation.Controllers
     [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class PresentationController : ApiController
     {
+        public readonly List<string> WildCardWords = new List<string>
+        {
+            "meme",
+            "comic sans",
+            "parody",
+            "joke",
+            "trump",
+            "satire",
+            "cat",
+            "teenager",
+            "monkey",
+            //"idiot",
+            //"blockchain",
+            "drunk",
+            //"baby",
+            //"sad",
+            //"happy",
+            //"crying",
+            //"art",
+            "potato",
+            //"iot",
+            "weird",
+            "how to",
+            "guide",
+            "inappropiate",
+            "evil",
+            "awkward"
+        };
+
+        private string GetRandomWord()
+        {
+            var itemsInList = WildCardWords.Count;
+            var randomNumber = new Random().Next() % itemsInList;
+            bool insertWord = (new Random().Next() % 4) == 0;
+
+            if (insertWord)
+            {
+                return WildCardWords[randomNumber];
+            }
+            return null;
+        }
+            
+
+
+
         [System.Web.Http.HttpGet]
         public int StartSession()
         {
@@ -114,7 +159,7 @@ namespace AwkwardPresentation.Controllers
 
             if (presentation != null)
             {
-                var imageList = await ImageProvider.GetImage(model.Text, "", prevText) as ImageList;
+                var imageList = await ImageProvider.GetImage(model.Text, GetRandomWord(), prevText) as ImageList;
                 if (imageList == null)
                 {
                     throw new HttpResponseException(HttpStatusCode.InternalServerError);
