@@ -4,6 +4,7 @@ using AwkwardPresentation.Models.Properties;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.ServiceLocation;
+using EPiServer.Shell.Web.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace AwkwardPresentation.Controllers
         static IContentRepository contentRepository = ServiceLocator.Current.GetInstance<IContentRepository>();
 
         [System.Web.Http.HttpPost]
-        public bool InputData([FromBody]ClickerModel model)
+        public ActionResult InputData([FromBody]ClickerModel model)
         {
             if (model != null && model is ClickerModel)
             {
@@ -29,15 +30,26 @@ namespace AwkwardPresentation.Controllers
                 if (clickerPage == null)
                 {
                     clickerPage = contentRepository.GetDefault<ClickerPage>(ContentReference.StartPage);
+                    clickerPage.DataSet = new List<ContentReference>();
                 }
 
                 var modelPage = contentRepository.GetDefault<StupidClickerModel>(ContentReference.StartPage);
                 modelPage.UpdateStupid(model);
 
                 clickerPage.DataSet.Add(modelPage.ContentLink);
-                return true;
+                return new JsonDataResult()
+                {
+                    ContentType = "application/json",
+                    Data = true,
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
-            return false;
+            return new JsonDataResult()
+            {
+                ContentType = "application/json",
+                Data = false,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
         [System.Web.Http.HttpGet]
