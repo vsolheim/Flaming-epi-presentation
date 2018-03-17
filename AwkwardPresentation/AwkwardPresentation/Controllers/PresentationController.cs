@@ -109,12 +109,17 @@ namespace AwkwardPresentation.Controllers
 
 
             var images = contentRepository.GetChildren<ImageModel>(reference);
-            var prevText = images.FirstOrDefault()?.Text;
+            var prevText = images.FirstOrDefault()?.Text ?? "";
 
 
             if (presentation != null)
             {
                 var imageList = await ImageProvider.GetImage(model.Text, "", prevText) as ImageList;
+                if (imageList == null)
+                {
+                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                }
+
                 var imageModel = contentRepository.GetDefault<ImageModel>(presentation.ContentLink);
                 imageModel.PageName = "New imagemodel number" + new Random().Next();
                 imageModel.Text = model.Text;

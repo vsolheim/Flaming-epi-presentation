@@ -26,6 +26,10 @@ namespace AwkwardPresentation.Business.Services
             });
 
             var returnObject = await SendJsonRequest(textObject, url);
+            if (returnObject == null)
+            {
+                return null;
+            }
 
             var jsonObj = JsonConvert.DeserializeObject<ImageList>(returnObject.ToString());
 
@@ -40,6 +44,7 @@ namespace AwkwardPresentation.Business.Services
             {
                 request.Content = content;
                 var response = await client.SendAsync(request).ConfigureAwait(false);
+
                 if (!response.IsSuccessStatusCode)
                     return null;
                 var returnObject = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
