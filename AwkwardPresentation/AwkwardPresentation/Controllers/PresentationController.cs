@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Mvc;
 using AwkwardPresentation.Business.Services;
 using AwkwardPresentation.Models.Pages;
@@ -20,6 +21,7 @@ using VisitOslo.Infrastructure.Helpers;
 
 namespace AwkwardPresentation.Controllers
 {
+    [EnableCors(origins: "http://localhost:4200", headers: "*", methods: "*")]
     public class PresentationController : ApiController
     {
         [System.Web.Http.HttpGet]
@@ -31,6 +33,10 @@ namespace AwkwardPresentation.Controllers
             newPage.PageName = "New page number " + (new Random().Next());
 
             // Need AccessLevel.NoAccess to get permission to create and save this new page.
+            contentRepository.Save(newPage, SaveAction.Publish, AccessLevel.NoAccess);
+
+            // Just changing the page name to contain its ContentLink ID, to make it more clear in the CMS
+            newPage.PageName = "Page nr. " + newPage.ContentLink.ID;
             contentRepository.Save(newPage, SaveAction.Publish, AccessLevel.NoAccess);
 
             return newPage.ContentLink.ID;
@@ -72,7 +78,7 @@ namespace AwkwardPresentation.Controllers
                 image = new SimpleImageModel()
                 {
                     Url = firstImage.Url,
-                    Text = firstImage.PageName
+                    Text = firstImage.Text
                 };
             }
 
@@ -107,6 +113,10 @@ namespace AwkwardPresentation.Controllers
                 imageModel.Url = iamgeList?.Slides?.FirstOrDefault().Url;
 
                 // Need AccessLevel.NoAccess to get permission to create and save this new page.
+                contentRepository.Save(imageModel, SaveAction.Publish, AccessLevel.NoAccess);
+
+                // Just changing the page name to contain its ContentLink ID, to make it more clear in the CMS
+                imageModel.PageName = "Imagemodel nr. " + imageModel.ContentLink.ID;
                 contentRepository.Save(imageModel, SaveAction.Publish, AccessLevel.NoAccess);
 
                 throw new HttpResponseException(HttpStatusCode.Accepted);

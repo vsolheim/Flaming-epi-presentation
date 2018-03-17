@@ -18,6 +18,8 @@ namespace AwkwardPresentation.Infrastructure
             // Avoid having circular dependencies cause an exception when serializing. E.g. the PropertyDataCollection Property in IContentData causes one such problem.
             //config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 
+            config.EnableCors();
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 

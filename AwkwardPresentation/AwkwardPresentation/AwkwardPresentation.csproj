@@ -171,6 +171,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Cors, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.4\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -186,6 +189,9 @@
     </Reference>
     <Reference Include="System.Web.Http, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.4\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.4\lib\net45\System.Web.Http.WebHost.dll</HintPath>
@@ -254,7 +260,9 @@
   <ItemGroup>
     <Content Include="Views\Web.config" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\GeoLiteCity.dat" />
     <None Include="EPiServerLog.config" />
     <Content Include="modules\_protected\EPiServer.Cms.TinyMce\web.config" />
