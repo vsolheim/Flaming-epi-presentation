@@ -133,6 +133,7 @@ namespace AwkwardPresentation.Controllers
             throw new HttpResponseException(HttpStatusCode.BadRequest);
         }
 
+        [System.Web.Http.HttpGet]
         public async Task<ActionResult> SummaryPage(int id)
         {
             var contentReference = new ContentReference(id);
@@ -140,13 +141,31 @@ namespace AwkwardPresentation.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-
+            
             var contentLoader = ServiceLocator.Current.GetInstance<ContentLoader>();
             var presentation = contentLoader.Get<PresentationModel>(contentReference);
 
+            var time = DateTime.Now.Subtract(presentation.Created);
+
+            var totalText = DataSummerizer.TotalText(contentReference);
+            var words = totalText.Split(' ');
+            var wordsPerMinute = words.Length / time.TotalMinutes;
+
+            var textSummary = await DataSummerizer.TextSummary(totalText);
+
             var sensorData = DataSummerizer.SensorySummary(presentation.Created);
 
-            return null;
+            return new JsonDataResult()
+            {
+                ContentType = "application/json",
+                Data = new
+                {
+                    SensoryData = sensorData,
+                    TextSummary = textSummary,
+                    WordsPerMinute = wordsPerMinute
+                },
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
     }
