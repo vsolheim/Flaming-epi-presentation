@@ -18,12 +18,17 @@ namespace AwkwardPresentation.Business.Services
         //public static async Task<object> GetImage(string searchText, string staticText = "", string prevImageText = "", string url = "http://text2slides.westeurope.cloudapp.azure.com/text2slides")
         public static async Task<object> GetImage(string searchText, string staticText = "", string prevImageText = "", string url = "http://localhost:59814/text2slides")
         {
+            var tempStaticText = staticText;
+            if (tempStaticText == null)
+            {
+                tempStaticText = "";
+            }
 
             var textObject = JsonConvert.SerializeObject(new
             {
                 text = searchText,
                 excludedText = prevImageText,
-                staticText = staticText
+                staticText = tempStaticText
             });
 
             var returnObject = await SendJsonRequest(textObject, url);

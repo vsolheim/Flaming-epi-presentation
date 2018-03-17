@@ -113,7 +113,17 @@ namespace AwkwardPresentation.Controllers
             }
 
             var contentLoader = ServiceLocator.Current.GetInstance<ContentLoader>();
+            var contentLoaderWrapper = ServiceLocator.Current.GetInstance<ContentLoaderWrapper>();
             var images = contentLoader.GetChildren<ImageModel>(contentReference);
+
+            var clickerPage = contentLoaderWrapper.FindPagesOfType<ClickerPage>(ContentReference.StartPage, false).FirstOrDefault();
+            var latestSensorData = contentLoaderWrapper.FindPagesOfType<StupidClickerModel>(clickerPage?.ContentLink, false).FirstOrDefault();
+            ClickerModel clickerModel = null;
+
+            if (latestSensorData != null)
+            {
+                clickerModel = new ClickerModel(latestSensorData);
+            }
 
 
             SimpleImageModel image = null;
@@ -124,7 +134,8 @@ namespace AwkwardPresentation.Controllers
                 image = new SimpleImageModel()
                 {
                     Url = firstImage.Url,
-                    Text = firstImage.Text
+                    Text = firstImage.Text,
+                    ClickerModel = clickerModel
                 };
             }
 

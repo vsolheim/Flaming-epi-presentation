@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using AwkwardPresentation.Models.Properties;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
@@ -40,5 +41,6 @@ namespace AwkwardPresentation.Models.Pages
         public string Url { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
+        public ClickerModel ClickerModel { get; set; }
     }
 }
