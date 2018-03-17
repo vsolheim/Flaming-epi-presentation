@@ -18,15 +18,14 @@ namespace AwkwardPresentation.Business.Services
 
         public static IEnumerable<ClickerModel> SensorySummary(DateTime startTime)
         {
-            var clickerPage = contentRepository.GetDefault<ClickerPage>(ContentReference.StartPage);
+            var clickerPage = contentRepository.GetChildren<ClickerPage>(ContentReference.StartPage).FirstOrDefault();
 
             if (clickerPage == null)
                 return null;
 
-            var data = clickerPage.DataSet
-                .Select(d => contentRepository.Get<StupidClickerModel>(d))
-                .Where(d => d.Published_at > startTime)
-                .Select(d => new ClickerModel(d));
+            var repoData = contentRepository.GetChildren<StupidClickerModel>(clickerPage.ContentLink);
+            var dateData = repoData?.Where(d => d.Created > startTime);
+            var data = dateData?.Select(d => new ClickerModel(d));
 
             return data;
         }

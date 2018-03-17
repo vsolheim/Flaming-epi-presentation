@@ -3,6 +3,8 @@ using AwkwardPresentation.Models.Pages;
 using AwkwardPresentation.Models.Properties;
 using EPiServer;
 using EPiServer.Core;
+using EPiServer.DataAccess;
+using EPiServer.Security;
 using EPiServer.ServiceLocation;
 using EPiServer.Shell.Web.Mvc;
 using Newtonsoft.Json;
@@ -31,12 +33,17 @@ namespace AwkwardPresentation.Controllers
                 {
                     clickerPage = contentRepository.GetDefault<ClickerPage>(ContentReference.StartPage);
                     clickerPage.DataSet = new List<ContentReference>();
+                    clickerPage.Name = "clicker num" + (new Random().Next());
+                    contentRepository.Save(clickerPage, SaveAction.Publish, AccessLevel.NoAccess);
                 }
 
-                var modelPage = contentRepository.GetDefault<StupidClickerModel>(ContentReference.StartPage);
+                var modelPage = contentRepository.GetDefault<StupidClickerModel>(clickerPage.ContentLink);
                 modelPage.UpdateStupid(model);
 
-                clickerPage.DataSet.Add(modelPage.ContentLink);
+                modelPage.Name = "model num" + (new Random().Next());
+                contentRepository.Save(modelPage, SaveAction.Publish, AccessLevel.NoAccess);             
+              
+
                 return new JsonDataResult()
                 {
                     ContentType = "application/json",
