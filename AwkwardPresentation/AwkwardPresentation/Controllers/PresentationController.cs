@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using AwkwardPresentation.Business.Services;
 using AwkwardPresentation.Models.Pages;
 using AwkwardPresentation.Models.Properties;
+using Castle.Core.Internal;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Core.Internal;
@@ -95,7 +96,7 @@ namespace AwkwardPresentation.Controllers
         [System.Web.Http.HttpPost]
         public async Task<ActionResult> UploadSlideData([FromBody] SimpleImageModel model)
         {
-            if (model == null || model.Id == 0)
+            if (model == null || model.Id == 0 || model.Text.IsNullOrEmpty())
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
@@ -106,11 +107,11 @@ namespace AwkwardPresentation.Controllers
 
             if (presentation != null)
             {
-                var iamgeList = await ImageProvider.GetImage(model.Text) as ImageList;
+                var imageList = await ImageProvider.GetImage(model.Text) as ImageList;
                 var imageModel = contentRepository.GetDefault<ImageModel>(presentation.ContentLink);
                 imageModel.PageName = "New imagemodel number" + new Random().Next();
                 imageModel.Text = model.Text;
-                imageModel.Url = iamgeList?.Slides?.FirstOrDefault().Url;
+                imageModel.Url = imageList?.Slides?.FirstOrDefault().Url;
 
                 // Need AccessLevel.NoAccess to get permission to create and save this new page.
                 contentRepository.Save(imageModel, SaveAction.Publish, AccessLevel.NoAccess);
