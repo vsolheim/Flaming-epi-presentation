@@ -20,7 +20,7 @@ namespace AwkwardPresentation.Business.Services
 
             var textObject = JsonConvert.SerializeObject(new
             {
-                text = "Test of concept with a few words",
+                text = searchText,
                 excludedText = prevImageText,
                 staticText = staticText
             });
