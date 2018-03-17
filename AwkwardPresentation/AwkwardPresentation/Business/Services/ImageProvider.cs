@@ -15,7 +15,7 @@ namespace AwkwardPresentation.Business.Services
     {
         static HttpClient client = new HttpClient();
 
-        public static async Task<object> GetImage(string searchText, string staticText = "", string prevImageText = "", string url = "http://text2slides.westeurope.cloudapp.azure.com/text2slides")
+        public static async Task<object> GetImage(string searchText, string staticText = "", string prevImageText = "", string url = "http://localhost:59814/text2slides")
         {
 
             var textObject = JsonConvert.SerializeObject(new
